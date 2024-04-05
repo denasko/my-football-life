@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends 'users/base.html' %}
+
+{% block content%}
     <title> Профиль</title>
-</head>
+
 <body>
     <h2>Профиль</h2>
     <form method="post">
@@ -11,4 +11,4 @@
         <button type="submit">Изменить</button>
     </form>
 </body>
-</html>
+{% endblock %}

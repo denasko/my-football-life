@@ -9,7 +9,7 @@ from django.urls import reverse
 from .forms import RegistrationForm, RefactorProfileForm
 
 
-def index(request: HttpResponse):
+def index(request):
     return render(request, 'users/index.html')
 
 
