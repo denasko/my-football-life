@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
+    'leagues_and_teams',
     'users',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -18,7 +18,7 @@
       <button class="btn btn-outline-success" type="submit" formaction="{% url 'users:index' %}" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить главную страницу">Главная страница</button>
       <button class="btn btn-outline-success" type="submit" formaction="" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить страницу с новости">Новости</button>
       <button class="btn btn-outline-success" type="submit" formaction="" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить страницу о сайте">О сайте</button>
-      <button class="btn btn-outline-success" type="submit" formaction="" data-toggle="tooltip" data-placement="top" title="Click to add new product">Add new product</button>
+      <button class="btn btn-outline-success" type="submit" formaction="{% url 'leagues_and_teams:championships_list' %}" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить страницу с таблицами">Таблицы</button>
       <button class="btn btn-outline-success" type="submit" formaction="" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы оставить отзыв о сайте">Обратная связь</button>
       {% if user.is_authenticated %}
         {% csrf_token %}

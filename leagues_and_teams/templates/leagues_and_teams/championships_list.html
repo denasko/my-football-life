@@ -1,0 +1,18 @@
+{% extends '/home/den/PycharmProjects/my-football-life/users/templates/users/base.html' %}
+
+{% block content%}
+<h1> Турнирные таблицы </h1>
+
+<ul>
+    {% for championship in championships %}
+    <li>
+        {% if not forloop.first %}
+        <hr>
+        {% endif %}
+        <h2><a href="{% url 'leagues_and_teams:championship_table' championship_name=championship.name %}"> {{ championship }}</a></h2>
+
+    </li>
+    {% endfor %}
+    <hr>
+</ul>
+{% endblock %}
