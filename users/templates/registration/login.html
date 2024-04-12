@@ -1,14 +1,42 @@
 {% extends 'users/base.html' %}
 
-{% if form.errors %}
-    <p>Your username and password didn't match.Please try again.</p>
-{% endif %}
+{% block title %}Вход в аккаунт{% endblock %}
 
-{% block content%}
-<form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Login">
-    <input type="hidden" name="next" value="{{ next }}">
-</form>
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Вход</div>
+
+                <div class="card-body">
+                    {% if form.errors and form.is_bound %}
+                    <div class="alert alert-danger" role="alert">
+                        Проверьте правильность введенных логина и пароля.
+                    </div>
+                    {% endif %}
+
+                    <form method="post" action="{% url 'login' %}" class="needs-validation">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_username" class="col-form-label">Имя пользователя</label>
+                            <input type="text" name="username" id="id_username" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_password" class="col-form-label">Пароль</label>
+                            <input type="password" name="password" id="id_password" class="form-control" required>
+                        </div>
+                        <input type="hidden" name="next" value="{{ next }}">
+                        <button type="submit" class="btn btn-success">Войти</button>
+                    </form>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                Нет аккаунта? <a href="{% url 'users:register' %}" class="btn btn-link">Зарегистрироваться</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
+
+

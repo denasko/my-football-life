@@ -9,7 +9,20 @@
         {% if not forloop.first %}
         <hr>
         {% endif %}
-        <h2><a href="{% url 'leagues_and_teams:championship_table' championship_name=championship.name %}"> {{ championship }}</a></h2>
+        <h2><a href="{% url 'leagues_and_teams:championship_table' championship_name=championship.name %}"> {{ championship.name }} <img src="{{ championship.emblem }}" alt="Emblem" width="70", height="70"></a></h2>
+
+    </li>
+    {% endfor %}
+    <hr>
+</ul>
+matches
+<ul>
+    {% for championship in championships %}
+    <li>
+        {% if not forloop.first %}
+        <hr>
+        {% endif %}
+        <h2><a href="{% url 'leagues_and_teams:list_championship_games' championship_name=championship.name %}"> {{ championship.name }} <img src="{{ championship.emblem }}" alt="Emblem" width="70", height="70"></a></h2>
 
     </li>
     {% endfor %}

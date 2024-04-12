@@ -1,0 +1,40 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Редактировать профиль</div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_birthday">Дата рождения</label>
+                            <div>
+                                {{ form.birthday }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_phone_number">Номер телефона</label>
+                            <div>
+                                {{ form.phone_number }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_bio">Расскажите о себе</label>
+                            <div>
+                                {{ form.bio }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

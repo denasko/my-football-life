@@ -18,6 +18,7 @@ class Team(models.Model):
     def __str__(self):
         return f'Team: {self.name}'
 
+
 class TeamStanding(models.Model):
     team = models.OneToOneField(Team, on_delete=models.CASCADE, related_name='standing')
     position = models.IntegerField(null=True)

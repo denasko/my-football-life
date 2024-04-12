@@ -1,5 +1,5 @@
 import os
-import json
+
 import requests
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'my_football_life.settings')
@@ -8,19 +8,19 @@ import django
 django.setup()
 from leagues_and_teams.models import Championship, Team, TeamStanding
 
-
 uri = 'https://api.football-data.org/v4/competitions/PD/standings'
 headers = {'X-Auth-Token': '81866e2c8ae342a2921bcf1a4753e22d'}
 
 
 def populate_db():
     headers = {'X-Auth-Token': '81866e2c8ae342a2921bcf1a4753e22d'}
-    leagues = ['PD', 'BL1']
+    leagues = ['PD', 'BL1', 'PL', 'SA', 'FL1']
     for liga in leagues:
         uri = f'https://api.football-data.org/v4/competitions/{liga}/standings'
 
         response = requests.get(uri, headers=headers)
         data = response.json()
+
         # create Championship object
         championship_name = data['competition']['name']
         championship_emblem = data['competition']['emblem']
@@ -36,7 +36,8 @@ def populate_db():
 
             team, created = Team.objects.get_or_create(
                 id=team_id,
-                defaults={'name': team_name, 'short_name': team_short_name, 'crest_url': team_crest_url, 'championship': championship}
+                defaults={'name': team_name, 'short_name': team_short_name, 'crest_url': team_crest_url,
+                          'championship': championship}
             )
             print(team)
             TeamStanding.objects.get_or_create(

@@ -17,18 +17,18 @@
       <button onclick="javascript:history.back()" class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы вернутся назад">Вернутся</button>
       <button class="btn btn-outline-success" type="submit" formaction="{% url 'users:index' %}" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить главную страницу">Главная страница</button>
       <button class="btn btn-outline-success" type="submit" formaction="" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить страницу с новости">Новости</button>
-      <button class="btn btn-outline-success" type="submit" formaction="" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить страницу о сайте">О сайте</button>
+      <button class="btn btn-outline-success" type="submit" formaction="{% url 'users:about' %}" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить страницу о сайте">О сайте</button>
       <button class="btn btn-outline-success" type="submit" formaction="{% url 'leagues_and_teams:championships_list' %}" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить страницу с таблицами">Таблицы</button>
       <button class="btn btn-outline-success" type="submit" formaction="" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы оставить отзыв о сайте">Обратная связь</button>
       {% if user.is_authenticated %}
         {% csrf_token %}
         <input type="submit" value="Выйти" class="btn btn-danger" formaction="{% url 'logout' %}?next={{ request.path }}" formmethod="post" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы выйти из аккаунта"/>
         <a class="btn btn-warning m-lg-2 " href="" data-toggle="tooltip" data-placement="top" title="Click to visit page whith your shopping cart">My shopping cart</a>
-        <button type="submit" class="btn btn-primary ml-2" formaction="{% url 'users:change_profile' %}" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить страницу вашего профиля">Профиль</button>
+        <button type="submit" class="btn btn-primary ml-2" formaction="{% url 'users:profile' %}" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить страницу вашего профиля">Профиль: {{ user.username }}</button>
     </form>
       {% else %}
     {% csrf_token %}
-    <input type="submit" value="Войти" class="btn btn-info" formaction="{% url 'login' %}?next={{ request.path }}" formmethod="post" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы войти в существующий аккаунт"/>
+    <input type="submit" value="Войти" class="btn btn-info" formaction="{% url 'login' %}?next={{ request.path }}" formmethod="get" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы войти в существующий аккаунт"/>
 {% endif %}
   </form>
 </nav>

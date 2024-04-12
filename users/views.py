@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from .models import Profile
 
 from .forms import RegistrationForm, RefactorProfileForm
 
@@ -13,7 +14,7 @@ def index(request):
     return render(request, 'users/index.html')
 
 
-def change_profile(request):
+def update_profile(request):
     """
     :param request:
     :return: Page with current profile
@@ -27,7 +28,7 @@ def change_profile(request):
 
     else:
         form = RefactorProfileForm(instance=request.user.profile)
-    return render(request, template_name='users/profile.html', context={'form': form})
+    return render(request, template_name='users/update_profile.html', context={'form': form})
 
 
 def register(request):
@@ -55,6 +56,15 @@ def register(request):
     else:
         form = RegistrationForm()
     return render(request, template_name='registration/register.html', context={'form': form})
+
+
+def about(request):
+    return render(request, template_name='users/about.html')
+
+
+def profile(request):
+    profile: Profile = request.user.profile
+    return render(request, template_name='users/profile.html', context={'profile': profile})
 
 
 

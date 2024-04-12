@@ -1,0 +1,20 @@
+{% extends '/home/den/PycharmProjects/my-football-life/users/templates/users/base.html' %}
+
+{% block content%}
+    <title>Все матчи</title>
+</head>
+<body>
+    <h1>Список матчей</h1>
+    <ul>
+        {% for match in matches %}
+            <li>
+                <strong><img src="{{ match.homeTeam.crest }}" alt="Emblem" width="30", height="30">{{ match.homeTeam.name }}</strong> против <strong>{{ match.awayTeam.name }}<img src="{{ match.awayTeam.crest }}" alt="Emblem" width="30", height="30"></strong>
+                <br>
+                Дата: {{ match.utcDate }}
+                <br>
+                Счёт: {{ match.score.fullTime.home }} - {{ match.score.fullTime.away }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+{% endblock %}
