@@ -1,0 +1,61 @@
+{% extends '/home/den/PycharmProjects/my-football-life/users/templates/users/base.html' %}
+
+{% block content %}
+<div style="display: flex;">
+    <div style="flex: 1;">
+        <h2 onclick="toggleList('championships_list')" style="cursor: pointer; color: blue; text-decoration: underline;">Показать турнирные таблицы</h2>
+
+        <ul id="championships_list" style="display: none;">
+            {% for championship in championships %}
+            <li>
+                <h2><a href="{% url 'leagues_and_teams:championship_table' championship_name=championship.name %}"> {{ championship.name }} <img src="{{ championship.emblem }}" alt="Emblem" width="70" height="70"></a></h2>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div style="flex: 1;">
+        <h2 onclick="toggleList('matches_list')" style="cursor: pointer; color: blue; text-decoration: underline;">Показать матчи</h2>
+
+        <ul id="matches_list" style="display: none;">
+            {% for championship in championships %}
+            <li>
+                {% if not forloop.first %}
+                {% endif %}
+                <h2><a href="{% url 'leagues_and_teams:list_championship_games' championship_name=championship.name %}"> {{ championship.name }} <img src="{{ championship.emblem }}" alt="Emblem" width="70", height="70"></a></h2>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div style="flex: 1;">
+        <h2 onclick="toggleList('prev_list')" style="cursor: pointer; color: blue; text-decoration: underline;">Показать превью к следующему туру</h2>
+
+        <ul id="prev_list" style="display: none;">
+            {% for championship in championships %}
+            <li>
+                {% if not forloop.first %}
+                {% endif %}
+                <h2><a href="{% url 'leagues_and_teams:list_championship_games' championship_name=championship.name %}"> {{ championship.name }} <img src="{{ championship.emblem }}" alt="Emblem" width="70", height="70"></a></h2>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div style="margin-top: 20px;">
+    <p>На этой странице вы можете увидеть актуальную информацию об обстановке команд в турнирных таблицах их чемпионатов, узнать какие матчи приготовил следующий тур выбранного соревнования а так же прочесть интереснейшие превью к матчам.</p>
+</div>
+
+<script>
+    function toggleList(id) {
+        var list = document.getElementById(id);
+        if (list.style.display === "none") {
+            list.style.display = "block";
+        } else {
+            list.style.display = "none";
+        }
+    }
+</script>
+
+{% endblock %}

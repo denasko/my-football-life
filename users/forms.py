@@ -1,8 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.validators import EmailValidator
-import re
-from .models import Profile
+from .models import Profile, Feedback
 
 # _______________________________________________Registration___________________________________________________
 
@@ -58,3 +57,16 @@ class RefactorProfileForm(forms.ModelForm):
 
         return phone_number
 
+
+# _______________________________________________Feedback___________________________________________________
+class FeedbackForm(forms.ModelForm):
+    RATING_CHOICES = [(i, str(i)) for i in range(1, 11)]
+
+    rating = forms.ChoiceField(choices=RATING_CHOICES, label='Оценка сайта')
+    header = forms.CharField(label='Заголовок', widget=forms.TextInput(
+        attrs={'placeholder': 'Введите заголовок сообщения'}))
+    comment = forms.CharField(label='Ваш комментарий', widget=forms.Textarea)
+
+    class Meta:
+        model = Feedback
+        fields = ['rating', 'header', 'comment']

@@ -4,24 +4,11 @@
 
 {% block content%}
 <h1> Главная страница </h1>
-
-<ul>
-    {% for cat in category %}
-    <li>
-        {% if not forloop.first %}
-        <hr>
-        {% endif %}
-        <h2><a href="{% url 'shop:category' cat %}"> {{ cat|title }}</a></h2>
-        {% for product in products %}
-            {% if cat == product.category %}
-            <h3><a href="{% url 'shop:product' product.id %}"> {{ product.product_name|title }} </a></h3>
-            <p>{{ product.description|truncatewords:20 }}</p>
-        {% endif %}
-
-    </li>
-
-    {% endfor %}
-{% endfor %}
-    <hr>
-</ul>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 {% endblock %}

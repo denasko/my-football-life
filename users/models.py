@@ -12,6 +12,15 @@ class Profile(models.Model):
         return f'Profile: {self.user.username}'
 
 
+class Feedback(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    rating = models.IntegerField()
+    header = models.CharField(max_length=200)
+    comment = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Feedback: {self.profile.user.username}, оценка - {self.rating}'
 # class Like(models.Model):
 #     user = models.ForeignKey(User, on_delete=models.CASCADE)
 #     news = models.ForeignKey('News', on_delete=models.CASCADE)  # Предположим, что у вас будет модель для новостей

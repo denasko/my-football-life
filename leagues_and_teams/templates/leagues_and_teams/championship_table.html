@@ -1,6 +1,6 @@
 {% extends '/home/den/PycharmProjects/my-football-life/users/templates/users/base.html' %}
 
-{% block content%}
+{% block content %}
     <title>{{ championship.name }}</title>
 
 <body>
@@ -39,5 +39,15 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <div class="row mt-3">
+        <div class="col text-left">
+            <a href="{% url 'leagues_and_teams:list_championship_games' championship_name=championship.name %}" class="btn btn-primary">Матчи следующего тура</a>
+        </div>
+        <div class="col text-right">
+            <a href="{% url 'leagues_and_teams:preview' championship_name=championship.name %}" class="btn btn-primary">Превью к следующему туру</a>
+        </div>
+    </div>
 </body>
+
 {% endblock %}

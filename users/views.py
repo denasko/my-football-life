@@ -6,29 +6,13 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import Profile
+from django.contrib import messages
 
-from .forms import RegistrationForm, RefactorProfileForm
+from .forms import RegistrationForm, RefactorProfileForm, FeedbackForm
 
 
 def index(request):
     return render(request, 'users/index.html')
-
-
-def update_profile(request):
-    """
-    :param request:
-    :return: Page with current profile
-    """
-    if request.method == 'POST':
-        form = RefactorProfileForm(request.POST, instance=request.user.profile)
-
-        if form.is_valid():
-            form.save()
-            return redirect('users:change_profile')
-
-    else:
-        form = RefactorProfileForm(instance=request.user.profile)
-    return render(request, template_name='users/update_profile.html', context={'form': form})
 
 
 def register(request):
@@ -62,9 +46,46 @@ def about(request):
     return render(request, template_name='users/about.html')
 
 
+@login_required
+def feedback(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+
+            feedback_instance = form.save(commit=False)
+            feedback_instance.profile = request.user.profile
+            feedback_instance.save()
+            messages.success(request, 'Спасибо за ваш отзыв!')
+            return redirect('users:index')
+    else:
+        form = FeedbackForm()
+    return render(request, 'users/feedback.html', {'form': form})
+
+# _______________________________________________Profile___________________________________________________
+
+
+@login_required
 def profile(request):
     profile: Profile = request.user.profile
     return render(request, template_name='users/profile.html', context={'profile': profile})
+
+
+@login_required
+def update_profile(request):
+    """
+    :param request:
+    :return: Page with current profile
+    """
+    if request.method == 'POST':
+        form = RefactorProfileForm(request.POST, instance=request.user.profile)
+
+        if form.is_valid():
+            form.save()
+            return redirect('users:change_profile')
+
+    else:
+        form = RefactorProfileForm(instance=request.user.profile)
+    return render(request, template_name='users/update_profile.html', context={'form': form})
 
 
 

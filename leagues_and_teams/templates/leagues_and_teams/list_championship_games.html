@@ -4,17 +4,39 @@
     <title>Все матчи</title>
 </head>
 <body>
-    <h1>Список матчей</h1>
-    <ul>
-        {% for match in matches %}
-            <li>
-                <strong><img src="{{ match.homeTeam.crest }}" alt="Emblem" width="30", height="30">{{ match.homeTeam.name }}</strong> против <strong>{{ match.awayTeam.name }}<img src="{{ match.awayTeam.crest }}" alt="Emblem" width="30", height="30"></strong>
-                <br>
-                Дата: {{ match.utcDate }}
-                <br>
-                Счёт: {{ match.score.fullTime.home }} - {{ match.score.fullTime.away }}
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="container">
+        <h1 class="text-center mt-5 mb-4">Список матчей</h1>
+        <ul class="list-group">
+            {% for match in matches %}
+                <li class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col-4 text-right">
+                            <img src="{{ match.homeTeam.crest }}" alt="Emblem" width="30" height="30">
+                            <strong>{{ match.homeTeam.name }}</strong>
+                        </div>
+                        <div class="col-4 text-center">
+                            <strong>против</strong><br>
+                            <span class="text-muted">{{ match.utcDate }}</span><br>
+                            <span class="text-muted">Счёт: {{ match.score.fullTime.home }} - {{ match.score.fullTime.away }}</span>
+                        </div>
+                        <div class="col-4 text-left">
+                            <strong>{{ match.awayTeam.name }}</strong>
+                            <img src="{{ match.awayTeam.crest }}" alt="Emblem" width="30" height="30">
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
+
 {% endblock %}
+
+
+
+
+
+
+
+
+

@@ -21,12 +21,12 @@ def populate_db():
         response = requests.get(uri, headers=headers)
         data = response.json()
 
-        # create Championship object
+        # create or get Championship object
         championship_name = data['competition']['name']
         championship_emblem = data['competition']['emblem']
         championship, created = Championship.objects.get_or_create(name=championship_name, emblem=championship_emblem)
 
-        # create Team and TeamStading objects
+        # Update or create Team and TeamStading objects
         for team_data in data['standings'][0]['table']:
             team_info = team_data['team']
             team_id = team_info['id']
@@ -39,21 +39,21 @@ def populate_db():
                 defaults={'name': team_name, 'short_name': team_short_name, 'crest_url': team_crest_url,
                           'championship': championship}
             )
-            print(team)
-            TeamStanding.objects.get_or_create(
-                team=team,
-                defaults={
-                    'position': team_data['position'],
-                    'played_games': team_data['playedGames'],
-                    'wins': team_data['won'],
-                    'draws': team_data['draw'],
-                    'losses': team_data['lost'],
-                    'points': team_data['points'],
-                    'goals_for': team_data['goalsFor'],
-                    'goals_against': team_data['goalsAgainst'],
-                    'goal_difference': team_data['goalDifference']
-                }
-            )
+
+            # Get or create TeamStanding object
+            team_standing, created = TeamStanding.objects.get_or_create(team=team)
+            # Update TeamStanding fields
+            team_standing.position = team_data['position']
+            team_standing.played_games = team_data['playedGames']
+            team_standing.wins = team_data['won']
+            team_standing.draws = team_data['draw']
+            team_standing.losses = team_data['lost']
+            team_standing.points = team_data['points']
+            team_standing.goals_for = team_data['goalsFor']
+            team_standing.goals_against = team_data['goalsAgainst']
+            team_standing.goal_difference = team_data['goalDifference']
+            team_standing.save()
 
 
 populate_db()
+

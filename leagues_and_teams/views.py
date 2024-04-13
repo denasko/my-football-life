@@ -18,7 +18,7 @@ def championship_table(request, championship_name: Championship):
     """
     try:
         championship: Championship = get_object_or_404(Championship, name=championship_name)
-        standings: TeamStanding = TeamStanding.objects.filter(team__championship=championship)
+        standings: TeamStanding = TeamStanding.objects.filter(team__championship=championship).order_by('position')
         return render(request, template_name='leagues_and_teams/championship_table.html',
                       context={'standings': standings, 'championship': championship})
 
@@ -28,6 +28,10 @@ def championship_table(request, championship_name: Championship):
 
 
 def list_championship_games(request, championship_name):
-    matches = print_matches(league='BL1')
+    matches = print_matches(league=championship_name)
     return render(request, template_name='leagues_and_teams/list_championship_games.html',
                   context={'matches': matches})
+
+
+def preview(request, championship_name):
+    return render(request, template_name='leagues_and_teams/preview.html',)
