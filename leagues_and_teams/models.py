@@ -35,5 +35,20 @@ class TeamStanding(models.Model):
         return f'TeamStanding: {self.team.name}'
 
 
+class Match(models.Model):
+    home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home_matches')
+    away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='away_matches')
+    date = models.DateTimeField()
+    status = models.CharField(max_length=20)
+    matchday = models.IntegerField()
+    winner = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, related_name='won_matches')
+    home_goals = models.IntegerField(null=True)
+    away_goals = models.IntegerField(null=True)
+    championship = models.ForeignKey(Championship, on_delete=models.CASCADE, related_name='matches')
+
+    def __str__(self):
+        return f'Match: {self.home_team} vs {self.away_team}'
+
+
 
 

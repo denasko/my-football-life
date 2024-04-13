@@ -24,7 +24,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(Feedback)
 class FeedbackAdmin(admin.ModelAdmin):
-    list_display = ['profile', 'rating', 'header', 'comment', 'date']
+    list_display = ['profile', 'rating', 'header', 'comment', 'date', 'is_published']
 
 
 admin.site.unregister(User)

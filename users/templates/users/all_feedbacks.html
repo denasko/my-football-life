@@ -1,0 +1,65 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content%}
+<div class="container">
+    <h1 class="text-center mt-5">Ваши отзывы</h1>
+
+    {% if messages %}
+    <div class="alert alert-success">
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            {% for feedback in feedbacks %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Пользователь: {{ feedback.profile.user.username }}</h5>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">Заголовок: {{ feedback.header }}</h6>
+                    <p class="card-text">{{ feedback.comment }}</p>
+                    <h6 class="card-subtitle mb-2 text-muted">Оценка: {{ feedback.rating }}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Дата: {{ feedback.date }}</h6>
+
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="pagination justify-content-center">
+        <ul class="pagination">
+            {% if feedbacks.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; Первая</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ feedbacks.previous_page_number }}">Предыдущая</a>
+            </li>
+            {% endif %}
+
+            <li class="page-item disabled">
+                <span class="page-link">Страница {{ feedbacks.number }} из {{ feedbacks.paginator.num_pages }}</span>
+            </li>
+
+            {% if feedbacks.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ feedbacks.next_page_number }}">Следующая</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ feedbacks.paginator.num_pages }}">Последняя &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

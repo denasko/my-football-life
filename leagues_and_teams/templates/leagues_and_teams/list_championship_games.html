@@ -1,7 +1,7 @@
 {% extends '/home/den/PycharmProjects/my-football-life/users/templates/users/base.html' %}
 
 {% block content%}
-    <title>Все матчи</title>
+    <title>Список матчей</title>
 </head>
 <body>
     <div class="container">
@@ -9,19 +9,19 @@
         <ul class="list-group">
             {% for match in matches %}
                 <li class="list-group-item">
-                    <div class="row align-items-center">
+                    <div class="row">
                         <div class="col-4 text-right">
-                            <img src="{{ match.homeTeam.crest }}" alt="Emblem" width="30" height="30">
-                            <strong>{{ match.homeTeam.name }}</strong>
+                            <img src="{{ match.home_team.crest_url }}" alt="Emblem" width="50" height="50">
+                            <strong>{{ match.home_team.name }}</strong>
                         </div>
                         <div class="col-4 text-center">
                             <strong>против</strong><br>
-                            <span class="text-muted">{{ match.utcDate }}</span><br>
-                            <span class="text-muted">Счёт: {{ match.score.fullTime.home }} - {{ match.score.fullTime.away }}</span>
+                            <span class="text-muted">{{ match.date }}</span><br>
+                            <span class="text-muted">Счёт: {{ match.home_goals }} - {{ match.away_goals }}</span>
                         </div>
                         <div class="col-4 text-left">
-                            <strong>{{ match.awayTeam.name }}</strong>
-                            <img src="{{ match.awayTeam.crest }}" alt="Emblem" width="30" height="30">
+                            <strong>{{ match.away_team.name }}</strong>
+                            <img src="{{ match.away_team.crest_url }}" alt="Emblem" width="50" height="50">
                         </div>
                     </div>
                 </li>
@@ -29,8 +29,13 @@
         </ul>
     </div>
 </body>
-
 {% endblock %}
+
+
+
+
+
+
 
 
 

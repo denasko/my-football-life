@@ -5,8 +5,10 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .models import Profile
+from .models import Profile, Feedback
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.decorators.cache import cache_page
 
 from .forms import RegistrationForm, RefactorProfileForm, FeedbackForm
 
@@ -41,11 +43,15 @@ def register(request):
         form = RegistrationForm()
     return render(request, template_name='registration/register.html', context={'form': form})
 
+# _______________________________________________About and Feedback___________________________________________________
 
+
+@cache_page(60 * 15)
 def about(request):
     return render(request, template_name='users/about.html')
 
 
+@cache_page(60 * 15)
 @login_required
 def feedback(request):
     if request.method == 'POST':
@@ -60,6 +66,19 @@ def feedback(request):
     else:
         form = FeedbackForm()
     return render(request, 'users/feedback.html', {'form': form})
+
+
+def all_feedbacks(request):
+    feedbacks = Feedback.objects.filter(is_published=True)
+    paginator = Paginator(feedbacks, 5)
+    page = request.GET.get('page')
+    try:
+        feedbacks = paginator.page(page)
+    except PageNotAnInteger:
+        feedbacks = paginator.page(1)
+    except EmptyPage:
+        feedbacks = paginator.page(paginator.num_pages)
+    return render(request, template_name='users/all_feedbacks.html', context={'feedbacks': feedbacks})
 
 # _______________________________________________Profile___________________________________________________
 
