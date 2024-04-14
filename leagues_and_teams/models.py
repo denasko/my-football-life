@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.db import models
 
 
@@ -58,8 +59,8 @@ class Match(models.Model):
     matchday = models.IntegerField(verbose_name="Игровой день")
     winner = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, related_name='won_matches',
                                verbose_name="Победитель")
-    home_goals = models.IntegerField(null=True, verbose_name="Голы домашней команды")
-    away_goals = models.IntegerField(null=True, verbose_name="Голы гостевой команды")
+    home_goals = models.IntegerField(null=True, verbose_name="Голы домашней команды", default=0)
+    away_goals = models.IntegerField(null=True, verbose_name="Голы гостевой команды", default=0)
     championship = models.ForeignKey(Championship, on_delete=models.CASCADE, related_name='matches',
                                      verbose_name="Чемпионат")
 

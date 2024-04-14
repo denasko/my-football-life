@@ -1,6 +1,12 @@
+import os
+
 import requests
 from django.db.models import Min
 
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'my_football_life.settings')
+import django
+
+django.setup()
 from leagues_and_teams.models import TeamStanding, Championship, Team, Match
 
 
@@ -9,6 +15,7 @@ def get_match_day(championship_name: Championship.name) -> int:
     min_played_games: int = TeamStanding.objects.filter(team__championship=championship).aggregate(
         min_played_games=Min('played_games'))['min_played_games']
     match_day_next = min_played_games + 1
+    print(f'match_day {match_day_next} - {championship_name}')
     return match_day_next
 
 
@@ -27,40 +34,41 @@ def create_match_objects():
         championship = Championship.objects.get(name=league_name)
 
         for match_data in data['matches']:
+
             home_team_data = match_data['homeTeam']
             away_team_data = match_data['awayTeam']
 
-            home_team = Team.objects.get(id=home_team_data['id'])
-            away_team = Team.objects.get(id=away_team_data['id'])
+            home_team, _ = Team.objects.get_or_create(
+                id=home_team_data['id'],
+                defaults={'name': home_team_data['name'], 'short_name': home_team_data['shortName'],
+                          'crest_url': home_team_data['crest']}
+            )
+            away_team, _ = Team.objects.get_or_create(
+                id=away_team_data['id'],
+                defaults={'name': away_team_data['name'], 'short_name': away_team_data['shortName'],
+                          'crest_url': away_team_data['crest']}
+            )
 
-            existing_match = Match.objects.filter(
+            match, created = Match.objects.get_or_create(
                 home_team=home_team,
                 away_team=away_team,
                 date=match_data['utcDate'],
-                championship=championship
-            ).first()
+                championship=championship,
+                defaults={
+                    'status': match_data['status'],
+                    'matchday': match_data['matchday'],
+                    'home_goals': match_data['score']['fullTime']['home'],
+                    'away_goals': match_data['score']['fullTime']['away'],
+                }
+            )
 
-            if existing_match:
-                existing_match.status = match_data['status']
-                existing_match.matchday = match_data['matchday']
-                existing_match.winner = home_team if match_data['score']['winner'] == 'HOME_TEAM' else away_team
-                existing_match.home_goals = match_data['score']['fullTime']['home']
-                existing_match.away_goals = match_data['score']['fullTime']['away']
-                existing_match.save()
-
-            else:
-                match = Match(
-                    home_team=home_team,
-                    away_team=away_team,
-                    date=match_data['utcDate'],
-                    status=match_data['status'],
-                    matchday=match_data['matchday'],
-                    winner=home_team if match_data['score']['winner'] == 'HOME_TEAM' else away_team,
-                    home_goals=match_data['score']['fullTime']['home'],
-                    away_goals=match_data['score']['fullTime']['away'],
-                    championship=championship
-                )
+            if not created:
+                match.status = match_data['status']
+                match.matchday = match_data['matchday']
+                match.home_goals = match_data['score']['fullTime']['home']
+                match.away_goals = match_data['score']['fullTime']['away']
                 match.save()
+
     print('uspeh1')
 
 
@@ -105,10 +113,12 @@ def create_championships_team_teamstanding():
             team_standing.goals_against = team_data['goalsAgainst']
             team_standing.goal_difference = team_data['goalDifference']
             team_standing.save()
+
     print('uspeh2')
 
 
-
+# create_championships_team_teamstanding()
+# create_match_objects()
 
 
 

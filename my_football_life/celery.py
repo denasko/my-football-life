@@ -19,15 +19,14 @@ app.autodiscover_tasks()
 
 
 
-# Расписание для запуска задач parse_match_objects и parse_championships_team_teamstanding ежедневно в полночь
 
 app.conf.beat_schedule = {
     'parse_match_objects_every_10_minutes': {
         'task': 'your_app.tasks.parse_match_objects',
-        'schedule': timedelta(minutes=2),
+        'schedule': timedelta(minutes=10),
     },
     'parse_championships_team_teamstanding_daily': {
         'task': 'your_app.tasks.parse_championships_team_teamstanding',
-        'schedule': timedelta(minutes=4),
+        'schedule': timedelta(minutes=25),
     },
 }

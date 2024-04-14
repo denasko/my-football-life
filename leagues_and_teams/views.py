@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.cache import cache_page
 from .servises import get_match_day
 
-from .models import TeamStanding, Championship, Match
+from .models import TeamStanding, Championship, Match, NextMatchPreview
 
 
 @cache_page(60 * 15)
@@ -41,11 +41,13 @@ def list_championship_games(request, championship_name: 'Championship.name'):
         match_day = request.POST.get('matchday')
         matches = championship.matches.filter(matchday=match_day)
     else:
-        match_day = get_match_day(championship_name)
+        match_day = get_match_day(championship_name=championship_name)
         matches = championship.matches.filter(matchday=match_day)
     return render(request, template_name='leagues_and_teams/list_championship_games.html',
                       context={'matches': matches, 'match_days': match_days, 'championship_name': championship_name})
 
 
 def preview(request, championship_name: 'Championship.name'):
-    return render(request, template_name='leagues_and_teams/preview.html',)
+    next_matchday = get_match_day(championship_name=championship_name)
+    previews = NextMatchPreview.objects.filter(match__matchday=next_matchday)
+    return render(request, template_name='leagues_and_teams/preview.html',context={'previews':previews})

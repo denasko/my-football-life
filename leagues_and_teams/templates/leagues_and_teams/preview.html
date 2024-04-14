@@ -1,18 +1,27 @@
 {% extends '/home/den/PycharmProjects/my-football-life/users/templates/users/base.html' %}
+{% load static %}
 
 {% block title %}Превью к следующему туру {{ championship.name }} {% endblock %}
 
-{% block content%}
-
-- Аугсбург не выигрывает уже в пяти матчах Бундеслиги подряд и проиграл две последние игры.
-
-- Аугсбург уже пять раз проигрывал в этом сезоне, несмотря на то, что вел в счете – больше, чем любая другая команда.
-
-- В осеннем матче «Штутгарт» выиграл у «Аугсбурга» со счетом 2:1. Вальдемар Антон забил победный гол в дополнительное время. «Штутгарт» нанес в том матче 31 удар по воротам гостей. Ни в одной другой игре «Аугсбург» не допускал такого количества ударов по своим воротам.
-
-- Энрико Маассен: «Штутгарт» в последнее время добился положительных результатов. Это всегда важно. Особенно, когда приходит новый тренер. Это хорошая команда, это было видно на протяжении всего сезона. В Лейпциге мы показали действительно хорошую игру. Конечно, сейчас для нас важно, чтобы мы снова набрали очки, лучше три».
-
-- Себастьян Хенесс: «У «Аугсбурга» есть четкая идея. Они пытаются сразу оказать давление на игрока с мячом. Они агрессивны, неудобны — особенно дома. Я с нетерпением жду матча. В пятницу вечером будет жаркий танец».
-
+{% block content %}
+    <div class="container-fluid" style="background-image: url('{% static 'static/leagues_and_teams/background/cd33fe83d29089f8060b7d5799eec.jpg' %}'); background-size: cover;">
+        <h1 class="text-center">Превью к следующему туру {{ championship.name }}</h1>
+        <div class="row">
+            {% for preview in previews %}
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h2 class="card-title">{{ preview.match.home_team.name }} vs {{ preview.match.away_team.name }}</h2>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ preview.preview_text }}</p>
+                        </div>
+                        <img src="{{ preview.photo }}" alt="photo" class="card-img-bottom" style="width: 100%; height: auto;">
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
+
 
