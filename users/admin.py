@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from .models import Profile, Feedback
@@ -25,6 +25,17 @@ class ProfileAdmin(admin.ModelAdmin):
 @admin.register(Feedback)
 class FeedbackAdmin(admin.ModelAdmin):
     list_display = ['profile', 'rating', 'header', 'comment', 'date', 'is_published']
+    actions = ['set_published', 'set_not_published']
+
+    @admin.action(description="Опубликовать")
+    def set_published(self, request, queryset):
+        queryset.update(is_published=True)
+        self.message_user(request, f"{queryset.count()} отзывов опубликованы")
+
+    @admin.action(description="Запретить")
+    def set_not_published(self, request, queryset):
+        queryset.update(is_published=False)
+        self.message_user(request, f"{queryset.count()} отзывов заблокированы", messages.WARNING)
 
 
 admin.site.unregister(User)

@@ -10,7 +10,7 @@
             {% for match in matches %}
                 <li class="list-group-item">
                     <div class="row">
-                        <div class="col-4 text-right">
+                        <div class="col-4 text-center">
                             <img src="{{ match.home_team.crest_url }}" alt="Emblem" width="50" height="50">
                             <strong>{{ match.home_team.name }}</strong>
                         </div>
@@ -19,9 +19,9 @@
                             <span class="text-muted">{{ match.date }}</span><br>
                             <span class="text-muted">Счёт: {{ match.home_goals }} - {{ match.away_goals }}</span>
                         </div>
-                        <div class="col-4 text-left">
-                            <strong>{{ match.away_team.name }}</strong>
+                        <div class="col-4 text-center">
                             <img src="{{ match.away_team.crest_url }}" alt="Emblem" width="50" height="50">
+                            <strong>{{ match.away_team.name }}</strong>
                         </div>
                     </div>
                 </li>
@@ -30,6 +30,7 @@
     </div>
 </body>
 {% endblock %}
+
 
 
 
