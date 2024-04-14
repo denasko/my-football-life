@@ -146,3 +146,9 @@ CACHES = {
         "LOCATION": "redis://127.0.0.1:6379",
     }
 }
+
+# Настройки Celery
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # URL для подключения к вашему брокеру сообщений (например, Redis)
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # URL для хранения результатов выполнения задач
+
+CELERY_TIMEZONE = 'UTC'  # Часовой пояс для задач Celery

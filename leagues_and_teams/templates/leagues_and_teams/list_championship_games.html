@@ -1,11 +1,33 @@
 {% extends '/home/den/PycharmProjects/my-football-life/users/templates/users/base.html' %}
 
-{% block content%}
-    <title>Список матчей</title>
-</head>
-<body>
+{% block title %} Следующий тур {{ championship.name }} {% endblock %}
+
+{% block content %}
     <div class="container">
         <h1 class="text-center mt-5 mb-4">Список матчей</h1>
+        <form method="GET" action="{% url 'leagues_and_teams:list_championship_games' championship_name=championship_name %}">
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="matchday">Выберите игровой день:</label>
+                        </div>
+                                                    {% csrf_token %}
+
+                        <select class="custom-select" id="matchday" name="matchday">
+                            <option selected disabled>Выберите...</option>
+                            {% for match_day in match_days %}
+                                <option value="{{ match_day }}">{{ match_day }}-й тур</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary" formmethod="post">Показать матчи</button>
+                </div>
+            </div>
+        </form>
+
         <ul class="list-group">
             {% for match in matches %}
                 <li class="list-group-item">
@@ -28,12 +50,7 @@
             {% endfor %}
         </ul>
     </div>
-</body>
 {% endblock %}
-
-
-
-
 
 
 

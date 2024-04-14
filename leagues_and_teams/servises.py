@@ -1,13 +1,6 @@
-import json
-import os
-
 import requests
 from django.db.models import Min
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'my_football_life.settings')
-import django
-
-django.setup()
 from leagues_and_teams.models import TeamStanding, Championship, Team, Match
 
 
@@ -16,8 +9,6 @@ def get_match_day(championship_name: Championship.name) -> int:
     min_played_games: int = TeamStanding.objects.filter(team__championship=championship).aggregate(
         min_played_games=Min('played_games'))['min_played_games']
     match_day_next = min_played_games + 1
-    print(championship)
-    print(match_day_next)
     return match_day_next
 
 
@@ -42,9 +33,22 @@ def create_match_objects():
             home_team = Team.objects.get(id=home_team_data['id'])
             away_team = Team.objects.get(id=away_team_data['id'])
 
-            existing_match = Match.objects.filter(home_team=home_team, away_team=away_team, date=match_data['utcDate'], championship=championship).first()
+            existing_match = Match.objects.filter(
+                home_team=home_team,
+                away_team=away_team,
+                date=match_data['utcDate'],
+                championship=championship
+            ).first()
 
-            if not existing_match:
+            if existing_match:
+                existing_match.status = match_data['status']
+                existing_match.matchday = match_data['matchday']
+                existing_match.winner = home_team if match_data['score']['winner'] == 'HOME_TEAM' else away_team
+                existing_match.home_goals = match_data['score']['fullTime']['home']
+                existing_match.away_goals = match_data['score']['fullTime']['away']
+                existing_match.save()
+
+            else:
                 match = Match(
                     home_team=home_team,
                     away_team=away_team,
@@ -104,8 +108,7 @@ def create_championships_team_teamstanding():
     print('uspeh2')
 
 
-create_championships_team_teamstanding()
-create_match_objects()
+
 
 
 

@@ -48,7 +48,6 @@ class TeamStanding(models.Model):
         return f'TeamStanding: {self.team.name}'
 
 
-
 class Match(models.Model):
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home_matches',
                                   verbose_name="Домашняя команда")
