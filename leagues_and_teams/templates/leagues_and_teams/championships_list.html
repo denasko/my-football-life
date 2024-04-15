@@ -1,19 +1,54 @@
 {% extends '/home/den/PycharmProjects/my-football-life/users/templates/users/base.html' %}
 
-{% block title %}Топ 5 лиг европы{% endblock %}
+{% block title %}Топ 5 лиг Европы{% endblock %}
 
 {% block content%}
-<h2> Выберите соревнование </h2>
 
-<ul>
-    {% for championship in championships %}
-    <li>
-        <h2><a href="{% url 'leagues_and_teams:championship_table' championship_name=championship.name %}"> {{ championship.name }} <img src="{{ championship.emblem }}" alt="Emblem" width="70", height="70"></a></h2>
-    </li>
-    {% endfor %}
-</ul>
+<div class="container">
+    <div class="row justify-content-between">
+        <div class="col-md-6">
+            <div class="text-left mt-3">
+                <h2>Выберите соревнование</h2>
+                <ul>
+                    {% for championship in championships %}
+                        <li>
+                            <h2><a href="{% url 'leagues_and_teams:championship_table' championship_name=championship.name %}"> {{ championship.name }} <img src="{{ championship.emblem }}" alt="Emblem" width="70", height="70"></a></h2>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="text-right mt-3">
+                <p>
+                    <p>Топ пять футбольных лиг Европы включают в себя чемпионаты:</p>
+                <ul>
+                    <li>Испании - Primera Division</li>
+                    <li>Германии - Bundesliga</li>
+                    <li>Италии - Serie A</li>
+                    <li>Англии - Premier Liegue</li>
+                    <li>Франции - Liegue 1</li>
+                </ul>
+                <p>Чемпионаты этих стран наполнены интригующими матчами, драматическими исходами и жаркими дерби.
+                    Лучшие клубы борятся за возможность выйти в Лигу Чемпионов и поднять над головой кубок лучшей
+                    команды страны</p>
+                    <p>На нашем ресурсе вы всегда можете видеть актуальную информацию о топ пяти лигах европы
+                    следить за результатами матчей, интереснейшими противостояниями и новостями из мира топ футбола.</p>
+                    <p>Вы можете выбрать интересующий ваш чемпионат и увидеть актуальную турнирную таблицу,
+                    узнать какие матчи приготовил следующий тур выбранного соревнования и прочесть интереснейшие
+                        превью к матчам.</p>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+            <div class="text-center mt-3">
+                Или посетить страницу со списком<a href="{% url 'leagues_and_teams:upcoming_matches' %}" class="btn btn-link">ближайших матчей</a>
+            </div>
 
 {% endblock %}
+
 
 
 

@@ -1,0 +1,55 @@
+{% extends '/home/den/PycharmProjects/my-football-life/users/templates/users/base.html' %}
+
+{% block title %} Ближайшие матчи {{ championship.name }} {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center mt-5 mb-4">Список ближайших матчей</h1>
+            </div>
+        <ul class="list-group">
+            {% for match in matches %}
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-4 text-center">
+                            <img src="{{ match.home_team.crest_url }}" alt="Emblem" width="50" height="50">
+                            <strong>{{ match.home_team.name }}</strong>
+                        </div>
+                        <div class="col-4 text-center">
+                            <strong>против</strong><br>
+                            <span class="text-muted">{{ match.date }}</span><br>
+                            <span class="text-muted">Счёт: {{ match.home_goals }} - {{ match.away_goals }}</span>
+                        </div>
+                        <div class="col-4 text-center">
+                            <img src="{{ match.away_team.crest_url }}" alt="Emblem" width="50" height="50">
+                            <strong>{{ match.away_team.name }}</strong>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    <div class="pagination justify-content-center">
+        <ul class="pagination">
+            {% if matches.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; Первая</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ matches.previous_page_number }}">Предыдущая</a>
+            </li>
+            {% endif %}
+
+            <li class="page-item disabled">
+                <span class="page-link">Страница {{ matches.number }} из {{ matches.paginator.num_pages }}</span>
+            </li>
+
+            {% if matches.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ matches.next_page_number }}">Следующая</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ matches.paginator.num_pages }}">Последняя &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

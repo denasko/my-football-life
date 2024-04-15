@@ -1,10 +1,10 @@
-from django.contrib import admin
 from django.db import models
 
 
 class Championship(models.Model):
     name = models.CharField(max_length=100)
     emblem = models.URLField(null=True)
+    preview = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name = "Чемпионат"
@@ -86,7 +86,3 @@ class NextMatchPreview(models.Model):
 
     def __str__(self):
         return f"{self.championship.name} - {self.match.home_team.name} vs {self.match.away_team.name} - Preview"
-
-
-
-
