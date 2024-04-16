@@ -1,0 +1,104 @@
+{% extends '/home/den/PycharmProjects/my-football-life/users/templates/users/base.html' %}
+
+{% block title %} Новости {% endblock %}
+
+{% block content %}
+<style>
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-between">
+        <div class="col-md-8">
+            <div class="text-left mt-3">
+
+                <h2>Фильтр новостей</h2>
+                <form method="POST" action="{% url 'news:get_news' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="championship">Чемпионат:</label>
+                        {% csrf_token %}
+                        <select id="championship" name="championship">
+                            <option value="">Выберите чемпионат</option>
+                            {% for championship in championships %}
+                            <option value="{{ championship.name }}">{{ championship.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Применить фильтр</button>
+                </form>
+            </div>
+            <div class="text-left mt-3">
+                <h2>Новости</h2>
+                <ul class="list-group">
+                    {% for new in news %}
+                    <li class="list-group-item">
+                        <div class="container">
+                            <div class="flex-container">
+                                <div class="item">
+                                    <h3>{{ new.title_first }}</h3>
+                                </div>
+                                <div class="item">
+                                    {% if new.author %}
+                                    <h7 align="right">Автор: <a href="{% url 'users:another_profile' profile_id=new.author.profile.id %}">{{ new.author|title }}</a></h7>
+                                    {% else %}
+                                    <h7 align="right">Автор: Anonimus</h7>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% if new.main_image %}
+                        <img src="{{ new.main_image.url }}" alt="{{ new.title }}" class="img-fluid" width="600"
+                             height="400">
+                        {% endif %}
+                        <p>{{ new.content_first|truncatechars:100 }}</p>
+                        <div class="container">
+                            <div class="flex-container">
+                                <div class="item">
+                                    <a href="{% url 'news:news_detail' news_id=new.id %}">Подробнее</a>
+                                </div>
+                                <div class="item">
+                                    <h7 align="right">Дата публикации: {{ new.date|date }}</h7>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="pagination justify-content-center">
+                    <ul class="pagination">
+                        {% if news.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">&laquo; Первая</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ news.previous_page_number }}">Предыдущая</a>
+                        </li>
+                        {% endif %}
+
+                        <li class="page-item disabled">
+                            <span class="page-link">Страница {{ news.number }} из {{ news.paginator.num_pages }}</span>
+                        </li>
+
+                        {% if news.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ news.next_page_number }}">Следующая</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ news.paginator.num_pages }}">Последняя &raquo;</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+

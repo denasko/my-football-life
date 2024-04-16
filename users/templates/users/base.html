@@ -16,7 +16,7 @@
   <form class="form-inline">
       <button onclick="javascript:history.back()" class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы вернутся назад">Вернутся</button>
       <button class="btn btn-outline-success" type="submit" formaction="{% url 'users:index' %}" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить главную страницу">Главная страница</button>
-      <button class="btn btn-outline-success" type="submit" formaction="" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить страницу с новости">Новости</button>
+      <button class="btn btn-outline-success" type="submit" formaction="{% url 'news:get_news' %}" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить страницу с новости">Новости</button>
       <button class="btn btn-outline-success" type="submit" formaction="{% url 'users:about' %}" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить страницу о сайте">О сайте</button>
       <button class="btn btn-outline-success" type="submit" formaction="{% url 'leagues_and_teams:championships_list' %}" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить страницу с топовыми лигами">Топ 5 лиг</button>
       <button class="btn btn-outline-success" type="submit" formaction="{% url 'users:feedback'%}" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы оставить отзыв о сайте">Обратная связь</button>

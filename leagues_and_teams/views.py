@@ -6,6 +6,8 @@ from django.views.decorators.cache import cache_page
 from .models import TeamStanding, Championship, Match, NextMatchPreview
 from .servises import get_match_day
 
+# _________________________________________________Championships________________________________________________________
+
 
 def championships_list(request):
     """
@@ -34,6 +36,9 @@ def championship_table(request, championship_name: 'Championship.name'):
         return redirect('leagues_and_teams:championship_list')
 
 
+# _________________________________________________Matches________________________________________________________
+
+
 @cache_page(60 * 1)
 def list_championship_games(request, championship_name: 'Championship.name'):
     """
@@ -55,18 +60,11 @@ def list_championship_games(request, championship_name: 'Championship.name'):
                   context={'matches': matches, 'match_days': match_days, 'championship_name': championship_name})
 
 
-def preview(request, championship_name: 'Championship.name'):
+def upcoming_matches(request):
     """
     :param request:
-    :param championship_name: Championship.name
-    :return: page with preview of next match
+    :return: Page with upcoming matches
     """
-    next_match_day: int = get_match_day(championship_name=championship_name)
-    previews = NextMatchPreview.objects.filter(match__matchday=next_match_day)
-    return render(request, template_name='leagues_and_teams/preview.html', context={'previews': previews})
-
-
-def upcoming_matches(request):
     all_matches = Match.objects.filter(status='TIMED').order_by('date')[:20]
     paginator = Paginator(all_matches, 5)
     page = request.GET.get('page')
@@ -79,3 +77,16 @@ def upcoming_matches(request):
         matches = paginator.page(paginator.num_pages)
 
     return render(request, template_name='leagues_and_teams/upcoming_matches.html', context={'matches': matches})
+
+# _________________________________________________Preview________________________________________________________
+
+
+def preview(request, championship_name: 'Championship.name'):
+    """
+    :param request:
+    :param championship_name: Championship.name
+    :return: page with preview of next match
+    """
+    next_match_day: int = get_match_day(championship_name=championship_name)
+    previews = NextMatchPreview.objects.filter(match__matchday=next_match_day)
+    return render(request, template_name='leagues_and_teams/preview.html', context={'previews': previews})

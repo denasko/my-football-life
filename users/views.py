@@ -51,7 +51,6 @@ def about(request):
     return render(request, template_name='users/about.html')
 
 
-@cache_page(60 * 15)
 @login_required
 def feedback(request):
     if request.method == 'POST':
@@ -105,6 +104,12 @@ def update_profile(request):
     else:
         form = RefactorProfileForm(instance=request.user.profile)
     return render(request, template_name='users/update_profile.html', context={'form': form})
+
+
+def another_profile(request, profile_id: Profile.id):
+    profile = Profile.objects.get(pk=profile_id)
+    another_user = Profile.user
+    return render(request, template_name='users/another_profile.html', context={'profile': profile, 'another_user': another_user})
 
 
 

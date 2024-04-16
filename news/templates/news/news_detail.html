@@ -1,0 +1,70 @@
+{% extends '/home/den/PycharmProjects/my-football-life/users/templates/users/base.html' %}
+
+{% block title %} {{ news.title_first }} {% endblock %}
+
+{% block content %}
+<style>
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+<div class="container">
+    <div class="row justify-content-between">
+        <div class="col-md-8">
+            <div class="text-left mt-3">
+                <h3>{{ news.title_first }}</h3>
+                {% if news.main_image %}
+                <img src="{{ news.main_image.url }}" alt="{{ news.title }}" class="img-fluid"
+                     style="max-width: 100%; height: auto;">
+                {% endif %}
+                <p>{{ news.content_first }}</p>
+            </div>
+            <div class="text-left mt-3">
+                {% if news.title_second %}
+                <h3>{{ news.title_second }}</h3>
+                {% endif %}
+                {% if news.content_second %}
+                <p>{{ news.content_second }}</p>
+                {% endif %}
+            </div>
+            <div class="text-left mt-3">
+                {% if news.title_third %}
+                <h3>{{ news.title_third }}</h3>
+                {% endif %}
+                {% if news.content_third %}
+                <p>{{ news.content_third }}</p>
+                {% endif %}
+            </div>
+            {% if news.second_image %}
+            <div class="text-left mt-3">
+                <img src="{{ news.second_image.url }}" alt="{{ news.title }}" class="img-fluid"
+                     style="max-width: 100%; height: auto;">
+            </div>
+            {% endif %}
+            <div class="text-left mt-3">
+                {% if news.title_fourth %}
+                <h3>{{ news.title_fourth }}</h3>
+                {% endif %}
+                {% if news.content_fourth %}
+                <p>{{ news.content_fourth }}</p>
+                {% endif %}
+            </div>
+            <div class="container">
+                <div class="flex-container">
+                    <div class="item">
+                        <h7>Дата публикации: {{ news.date|date }}</h7>
+                        {% if news.author %}
+                        <p align="left">Автор: <a
+                                href="{% url 'users:another_profile' profile_id=news.author.profile.id %}">{{ news.author|title }}</a></p>
+                        {% else %}
+                        <p align="left">Автор: Anonimus</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

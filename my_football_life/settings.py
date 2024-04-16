@@ -31,6 +31,8 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
+    'events',
+    'news',
     'leagues_and_teams',
     'users',
     'django.contrib.admin',
@@ -148,7 +150,10 @@ CACHES = {
 }
 
 # Настройки Celery
-CELERY_BROKER_URL = 'redis://localhost:6379/0'  # URL для подключения к вашему брокеру сообщений (например, Redis)
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # URL для хранения результатов выполнения задач
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
-CELERY_TIMEZONE = 'UTC'  # Часовой пояс для задач Celery
+CELERY_TIMEZONE = 'UTC'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
