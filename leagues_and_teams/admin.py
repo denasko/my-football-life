@@ -55,7 +55,7 @@ class MatchAdmin(admin.ModelAdmin):
 
 @admin.register(NextMatchPreview)
 class NextMatchPreviewAdmin(admin.ModelAdmin):
-    list_display = ['championship', 'match', 'preview_text']
+    list_display = ['championship', 'match']
     list_filter = ['championship']
     search_fields = ['championship__name', 'match__home_team__name', 'match__away_team__name']
     list_per_page = 10

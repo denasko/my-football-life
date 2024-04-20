@@ -1,16 +1,14 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.urls import reverse
-from .models import Profile, Feedback
-from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render, redirect
 from django.views.decorators.cache import cache_page
 
-from .forms import RegistrationForm, RefactorProfileForm, FeedbackForm
+from .forms import RegistrationForm, RefactorProfileForm, FeedbackForm, CustomUserForm
+from .models import Profile, Feedback
 
 
 def index(request):
@@ -35,6 +33,7 @@ def register(request):
             user = User.objects.create(username=user_username, email=user_email, password=hashed_password)
 
             if user:
+                login(request, user)
                 return redirect('users:index')
             else:
                 return render(request, template_name='registration/register.html',
@@ -42,6 +41,7 @@ def register(request):
     else:
         form = RegistrationForm()
     return render(request, template_name='registration/register.html', context={'form': form})
+
 
 # _______________________________________________About and Feedback___________________________________________________
 
@@ -56,7 +56,6 @@ def feedback(request):
     if request.method == 'POST':
         form = FeedbackForm(request.POST)
         if form.is_valid():
-
             feedback_instance = form.save(commit=False)
             feedback_instance.profile = request.user.profile
             feedback_instance.save()
@@ -79,6 +78,7 @@ def all_feedbacks(request):
         feedbacks = paginator.page(paginator.num_pages)
     return render(request, template_name='users/all_feedbacks.html', context={'feedbacks': feedbacks})
 
+
 # _______________________________________________Profile___________________________________________________
 
 
@@ -95,21 +95,23 @@ def update_profile(request):
     :return: Page with current profile
     """
     if request.method == 'POST':
-        form = RefactorProfileForm(request.POST, instance=request.user.profile)
+        user_form = CustomUserForm(request.POST, instance=request.user)
+        profile_form = RefactorProfileForm(request.POST, instance=request.user.profile)
 
-        if form.is_valid():
-            form.save()
-            return redirect('users:change_profile')
+        if profile_form.is_valid() and user_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect('users:profile')
 
     else:
-        form = RefactorProfileForm(instance=request.user.profile)
-    return render(request, template_name='users/update_profile.html', context={'form': form})
+        user_form = CustomUserForm(instance=request.user)
+        profile_form = RefactorProfileForm(instance=request.user.profile)
+    return render(request, template_name='users/update_profile.html', context={'profile_form': profile_form,
+                                                                               'user_form': user_form})
 
 
 def another_profile(request, profile_id: Profile.id):
-    profile = Profile.objects.get(pk=profile_id)
-    another_user = Profile.user
-    return render(request, template_name='users/another_profile.html', context={'profile': profile, 'another_user': another_user})
-
-
-
+    user_profile = Profile.objects.get(pk=profile_id)
+    another_user = User.objects.get(profile=user_profile)
+    return render(request, template_name='users/another_profile.html', context={'profile': user_profile,
+                                                                                'another_user': another_user})

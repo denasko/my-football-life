@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
 from django.core.validators import EmailValidator
 from .models import Profile, Feedback
@@ -35,20 +36,22 @@ class RegistrationForm(forms.Form):
 # _______________________________________________Profile___________________________________________________
 
 
-class RefactorProfileForm(forms.ModelForm):
+class CustomUserForm(UserChangeForm):
+    # Добавляем новые поля или изменяем существующие
     birthday = forms.DateField(label='Дата рождения', widget=forms.SelectDateWidget(years=range(1940, 2023)))
 
     class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'birthday']
+
+
+class RefactorProfileForm(forms.ModelForm):
+    phone_number = forms.CharField(label='Номер телефона', widget=forms.TextInput(attrs={'placeholder': 'Введите номер телефона'}))
+    bio = forms.CharField(label='Расскажите о себе', widget=forms.Textarea(attrs={'placeholder': 'Где играете, за какой клуб болеете и тп.'}))
+
+    class Meta:
         model = Profile
-        fields = ['birthday', 'phone_number', 'bio']
-        labels = {
-            'phone_number': 'Номер телефона',
-            'bio': 'Расскажите о себе'
-        }
-        widgets = {
-            'phone_number': forms.TextInput(attrs={'placeholder': 'Введите номер телефона'}),
-            'bio': forms.Textarea(attrs={'placeholder': 'Где играете, за какой клуб болеете и тп.'})
-        }
+        fields = ['phone_number', 'bio']
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number')

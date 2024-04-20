@@ -27,6 +27,8 @@ urlpatterns = [
     path('news/', include('news.urls')),
     path('accounts/login/', LoginView.as_view(), name='login'),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
+    path('ckeditor5/', include('django_ckeditor_5.urls')),
+
 ]
 
 if settings.DEBUG:

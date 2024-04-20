@@ -22,16 +22,7 @@ class Feedback(models.Model):
 
     def __str__(self):
         return f'Feedback: {self.profile.user.username}, оценка - {self.rating}'
-# class Like(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     news = models.ForeignKey('News', on_delete=models.CASCADE)  # Предположим, что у вас будет модель для новостей
-#
-#
-# class Comment(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     news = models.ForeignKey('News', on_delete=models.CASCADE)
-#     text = models.TextField()
-#     created_at = models.DateTimeField(auto_now_add=True)
+
 #
 #
 # class Message(models.Model):

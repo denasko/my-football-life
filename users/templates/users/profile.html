@@ -19,7 +19,7 @@
                     <li class="list-group-item"><strong>Имя:</strong> {{ user.first_name }}</li>
                     <li class="list-group-item"><strong>Фамилия:</strong> {{ user.last_name }}</li>
                     <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
-                    <li class="list-group-item"><strong>Дата рождения:</strong> {{ profile.birthday }}</li>
+                    <li class="list-group-item"><strong>Дата рождения:</strong> {{ profile.birthday|date }}</li>
                     <li class="list-group-item"><strong>Номер телефона:</strong> {{ profile.phone_number }}</li>
                     <li class="list-group-item"><strong>О себе:</strong> {{ profile.bio }}</li>
 

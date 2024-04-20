@@ -1,6 +1,6 @@
 {% extends '/home/den/PycharmProjects/my-football-life/users/templates/users/base.html' %}
 
-{% block title %} {{ news.title_first }} {% endblock %}
+{% block title %} {{ news.title }} {% endblock %}
 
 {% block content %}
 <style>
@@ -13,43 +13,24 @@
     <div class="row justify-content-between">
         <div class="col-md-8">
             <div class="text-left mt-3">
-                <h3>{{ news.title_first }}</h3>
-                {% if news.main_image %}
-                <img src="{{ news.main_image.url }}" alt="{{ news.title }}" class="img-fluid"
+                <h3>{{ news.title }}</h3>
+                {% if news.photo %}
+                <img src="{{ news.photo.url }}" alt="{{ news.title }}" class="img-fluid"
                      style="max-width: 100%; height: auto;">
                 {% endif %}
-                <p>{{ news.content_first }}</p>
-            </div>
-            <div class="text-left mt-3">
-                {% if news.title_second %}
-                <h3>{{ news.title_second }}</h3>
-                {% endif %}
-                {% if news.content_second %}
-                <p>{{ news.content_second }}</p>
-                {% endif %}
-            </div>
-            <div class="text-left mt-3">
-                {% if news.title_third %}
-                <h3>{{ news.title_third }}</h3>
-                {% endif %}
-                {% if news.content_third %}
-                <p>{{ news.content_third }}</p>
-                {% endif %}
-            </div>
-            {% if news.second_image %}
-            <div class="text-left mt-3">
-                <img src="{{ news.second_image.url }}" alt="{{ news.title }}" class="img-fluid"
+                <div class="news-detail">
+                    {% for section in news.news_sections.all %}
+                    <div class="section">
+                        <h2>{{ section.title }}</h2>
+                            <p>{{ section.content|safe }}</p>
+                        {% if section.photo %}
+                <img src="{{ section.photo.url }}" alt="{{ sections.title }}" class="img-fluid"
                      style="max-width: 100%; height: auto;">
-            </div>
-            {% endif %}
-            <div class="text-left mt-3">
-                {% if news.title_fourth %}
-                <h3>{{ news.title_fourth }}</h3>
-                {% endif %}
-                {% if news.content_fourth %}
-                <p>{{ news.content_fourth }}</p>
-                {% endif %}
-            </div>
+                        {% endif %}
+                 </div>
+    {% endfor %}
+</div>
+
             <div class="container">
                 <div class="flex-container">
                     <div class="item">
@@ -63,6 +44,70 @@
                     </div>
                 </div>
             </div>
+            <div class="item">
+                {% if user.is_authenticated %}
+                <form class="form-inline">
+                    {% csrf_token %}
+                    <input type="submit" value="Нравится: {{ news.count_likes }}" class="btn btn-info"
+                           formaction="{% url 'news:like_news' news_id=news.id %}" formmethod="POST"
+                           data-toggle="tooltip" data-placement="top" title="Нравится"/>
+                </form>
+                {% else %}
+                <input type="submit" value="Нравится: {{ news.count_likes }}" class="btn btn-info">
+                {% endif %}
+            </div>
+            <div class="container mt-3">
+                <h3 class="text-center mt-5 mb-4">Комментарии</h3>
+            </div>
+            <ul class="list-group">
+                {% for comment in news.comment_set.all %}
+                <li class="list-group-item">
+                    <div class="comment">
+                        <div class="col-4 text-center">
+                            <p><strong>Автор: <a
+                                href="{% url 'users:another_profile' profile_id=news.author.profile.id %}">{{ comment.user.username|title }}</a></strong></p>
+                            <p>{{ comment.text }}</p>
+                            {% if user.is_authenticated and comment.user == user %}
+                            <form method="post"
+                                  action="{% url 'news:delete_comment' comment_id=comment.id news_id=news.id %}">
+                                {% csrf_token %}
+                                <input type="submit" value="Удалить" class="btn btn-danger btn-sm"/>
+                            </form>
+                            {% endif %}
+                        </div>
+                        {% empty %}
+                        <p>Пока нет комментариев</p>
+                        {% endfor %}
+                    </div>
+                </li>
+            </ul>
+            {% if user.is_authenticated %}
+            <div class="container mt-3">
+                <div class="list-group">
+                    <div class="item">
+                        <h5>Добавить комментарий</h5>
+                        <form method="post" action="{% url 'news:add_comment' news_id=news.id %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                    <textarea class="form-control" name="text" rows="3" placeholder="Введите ваш комментарий"
+                              required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Отправить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="container mt-3">
+                <div class="flex-container">
+                    <div class="item">
+                        <p>Для добавления комментария необходимо <a href="{% url 'login' %}">войти</a> или <a
+                                href="{% url 'users:register' %}">зарегистрироваться</a>.</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
         </div>
     </div>
 </div>

@@ -28,10 +28,8 @@
                             {% endfor %}
                         </select>
                     </div>
-
                     <button type="submit" class="btn btn-primary">Применить фильтр</button>
                 </form>
-            </div>
             <div class="text-left mt-3">
                 <h2>Новости</h2>
                 <ul class="list-group">
@@ -40,7 +38,7 @@
                         <div class="container">
                             <div class="flex-container">
                                 <div class="item">
-                                    <h3>{{ new.title_first }}</h3>
+                                    <h3>{{ new.title }}</h3>
                                 </div>
                                 <div class="item">
                                     {% if new.author %}
@@ -48,14 +46,22 @@
                                     {% else %}
                                     <h7 align="right">Автор: Anonimus</h7>
                                     {% endif %}
+                                    <div class="form-group">
+                                        <ul id="leftchapters">
+                                            <li class="selected">Теги:</li>
+                                            {% for tag in new.tags.all %}
+                                                <li><a href="#">{{ tag.name }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {% if new.main_image %}
-                        <img src="{{ new.main_image.url }}" alt="{{ new.title }}" class="img-fluid" width="600"
+                        {% if new.news_sections.first.photo %}
+                        <img src="{{ new.news_sections.first.photo.url }}" alt="{{ new.title }}" class="img-fluid" width="600"
                              height="400">
                         {% endif %}
-                        <p>{{ new.content_first|truncatechars:100 }}</p>
+                        <p>{{ new.news_sections.first.content|truncatechars:100|safe }}</p>
                         <div class="container">
                             <div class="flex-container">
                                 <div class="item">
@@ -98,6 +104,8 @@
         </div>
     </div>
 </div>
+
+
 
 {% endblock %}
 
