@@ -23,7 +23,7 @@
       {% if user.is_authenticated %}
         {% csrf_token %}
         <input type="submit" value="Выйти" class="btn btn-danger" formaction="{% url 'logout' %}?next={{ request.path }}" formmethod="post" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы выйти из аккаунта"/>
-        <a class="btn btn-warning m-lg-2 " href="" data-toggle="tooltip" data-placement="top" title="Click to visit page whith your shopping cart">My shopping cart</a>
+        <a class="btn btn-warning m-lg-2 " href="{% url 'events:football_map' %}" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посмотреть доступные карты">карта </a>
         <button type="submit" class="btn btn-primary ml-2" formaction="{% url 'users:profile' %}" data-toggle="tooltip" data-placement="top" title="Нажмите чтобы посетить страницу вашего профиля">Профиль: {{ user.username }}</button>
     </form>
       {% else %}
@@ -42,7 +42,7 @@
     </ul>
     <p class="text-center text-body-secondary">Created by: Avizhonis Denas ©</p>
         <p class="text-center text-body-secondary">Не отчисляйте пожалуйста :c</p>
-        <a href="{% url 'users:all_feedbacks' %}">Ваши отзывы</a>
+        <p class="text-center text-body-secondary"><a href="{% url 'users:all_feedbacks' %}">Ваши отзывы</a></p>
 
 </footer>
 </html>

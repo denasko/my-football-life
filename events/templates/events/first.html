@@ -1,11 +1,13 @@
 {% extends '/home/den/PycharmProjects/my-football-life/users/templates/users/base.html' %}
 
-{% block title %}Топ 5 лиг Европы{% endblock %}
+{% block title %}Карта{% endblock %}
 
 {% block content%}
 
-<body>
-    <iframe src="map.html" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-</body>
+<div style="position:relative;overflow:hidden;"><a href="https://yandex.by/maps/org/gimnaziya_25/100748881622/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Гимназия № 25</a><a href="https://yandex.by/maps/157/minsk/category/gymnasium/184106234/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:14px;">Гимназия в Минске</a><a href="https://yandex.by/maps/157/minsk/category/school/184106240/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:28px;">Общеобразовательная школа в Минске</a><iframe src="https://yandex.by/map-widget/v1/?ll=27.659267%2C53.867880&mode=poi&poi%5Bpoint%5D=27.659412%2C53.867632&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D100748881622&z=18.15" width="560" height="400" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe></div>
 
+<h2>Все поля</h2>
+{% for field in football_fields %}
+    <h2><a href="{% url 'events:football_field' field.name %}"> {{ field.name }} </a></h2>
+{% endfor %}
 {% endblock %}

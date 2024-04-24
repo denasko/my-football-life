@@ -52,6 +52,11 @@ class MatchAdmin(admin.ModelAdmin):
     list_per_page = 10
     inlines = [NextMatchPreviewInline]
 
+    # def get_queryset(self, request):
+    # watch only NEXT matches
+    #     queryset = super().get_queryset(request)
+    #     return Match.get_upcoming_matches()
+
 
 @admin.register(NextMatchPreview)
 class NextMatchPreviewAdmin(admin.ModelAdmin):
@@ -59,3 +64,8 @@ class NextMatchPreviewAdmin(admin.ModelAdmin):
     list_filter = ['championship']
     search_fields = ['championship__name', 'match__home_team__name', 'match__away_team__name']
     list_per_page = 10
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'match':
+            kwargs["queryset"] = Match.get_upcoming_matches()
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)

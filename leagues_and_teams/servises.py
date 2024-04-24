@@ -21,5 +21,3 @@ def get_match_day(championship_name: Championship.name) -> int:
 
 
 
-
-

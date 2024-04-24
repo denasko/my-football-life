@@ -20,6 +20,11 @@ class News(models.Model):
     class Meta:
         verbose_name = "Новость"
         verbose_name_plural = "Новости"
+        ordering = ('-date',)
+        indexes = [
+            models.Index(fields=['-date']),
+            models.Index(fields=['championship']),
+        ]
 
     def __str__(self):
         return f'{self.title}, championship - {self.championship}, team - {self.team}'
@@ -66,3 +71,6 @@ class Comment(models.Model):
     class Meta:
         verbose_name = "Комментарий"
         verbose_name_plural = "Комментарии"
+
+    def __str__(self):
+        return f'{self.user} - {self.news}'

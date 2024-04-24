@@ -1,0 +1,59 @@
+{% extends '/home/den/PycharmProjects/my-football-life/users/templates/users/base.html' %}
+
+{% block title %} Создание события {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Создание игры</div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label for="title">title</label>
+                                <div>
+                                    {{ form.title }}
+                                </div>
+                            </div>
+                            <label for="description">description</label>
+                            <div>
+                                {{ form.description }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">date</label>
+                            <div>
+                                {{ form.date }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="start_time">start_time</label>
+                            <div>
+                                {{ form.start_time }}
+                            </div>
+                            <div class="form-group">
+                                <label for="max_players">max_players</label>
+                                <div>
+                                    {{ form.max_players }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="football_field">football_field</label>
+                                <div>
+                                    {{ form.football_field }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Создать игру</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,11 +1,11 @@
 {% extends '/home/den/PycharmProjects/my-football-life/users/templates/users/base.html' %}
 {% load static %}
 
-{% block title %}Превью к следующему туру {{ championship.name }} {% endblock %}
+{% block title %}Превью к {{next_match_day}} туру {{ championship.name }} {% endblock %}
 
 {% block content %}
     <div class="container-fluid" style="background-image: url('{% static 'static/leagues_and_teams/background/cd33fe83d29089f8060b7d5799eec.jpg' %}'); background-size: cover;">
-        <h1 class="text-center">Превью к следующему туру {{ championship.name }}</h1>
+        <h1 class="text-center">Превью к {{next_match_day}} туру {{ championship.name }}</h1>
         <div class="row">
             {% for preview in previews %}
                 <div class="col-md-6 mb-4">
@@ -14,9 +14,10 @@
                             <h2 class="card-title">{{ preview.match.home_team.name }} vs {{ preview.match.away_team.name }}</h2>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">{{ preview.preview_text }}</p>
+                            <p class="card-text">{{ preview.preview_text|safe }}</p>
                         </div>
-                        <img src="{{ preview.photo }}" alt="photo" class="card-img-bottom" style="width: 100%; height: auto;">
+                        <img src="{{ preview.photo.url }}" alt="{{ preview.title }}" class="img-fluid" width="600"
+                             height="400">
                     </div>
                 </div>
             {% endfor %}

@@ -46,7 +46,7 @@ def register(request):
 # _______________________________________________About and Feedback___________________________________________________
 
 
-@cache_page(60 * 15)
+#@cache_page(60 * 15)
 def about(request):
     return render(request, template_name='users/about.html')
 

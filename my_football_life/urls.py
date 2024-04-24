@@ -25,6 +25,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('leagues_and_teams/', include('leagues_and_teams.urls')),
     path('news/', include('news.urls')),
+    path('events/', include('events.urls')),
     path('accounts/login/', LoginView.as_view(), name='login'),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
     path('ckeditor5/', include('django_ckeditor_5.urls')),

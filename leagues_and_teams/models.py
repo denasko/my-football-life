@@ -1,4 +1,5 @@
 from django.db import models
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Championship(models.Model):
@@ -64,6 +65,11 @@ class Match(models.Model):
     championship = models.ForeignKey(Championship, on_delete=models.CASCADE, related_name='matches',
                                      verbose_name="Чемпионат")
 
+    @classmethod
+    def get_upcoming_matches(cls):
+        upcoming_matches = cls.objects.filter(status='TIMED')
+        return upcoming_matches
+
     class Meta:
         verbose_name = "Ближайший матч"
         verbose_name_plural = "Ближайшие матчи"
@@ -77,8 +83,8 @@ class NextMatchPreview(models.Model):
                                      verbose_name="Чемпионат")
     match = models.OneToOneField(Match, on_delete=models.CASCADE, related_name='next_match_preview',
                                  verbose_name="Матч")
-    preview_text = models.TextField(verbose_name="Превью")
-    photo = models.URLField(verbose_name="фото")
+    preview_text = CKEditor5Field(verbose_name="Превью")
+    photo = models.ImageField(upload_to='next_match_previews', verbose_name="Фото")
 
     class Meta:
         verbose_name = "Превью матча"

@@ -37,7 +37,6 @@ class RegistrationForm(forms.Form):
 
 
 class CustomUserForm(UserChangeForm):
-    # Добавляем новые поля или изменяем существующие
     birthday = forms.DateField(label='Дата рождения', widget=forms.SelectDateWidget(years=range(1940, 2023)))
 
     class Meta:

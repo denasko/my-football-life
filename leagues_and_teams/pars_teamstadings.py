@@ -6,10 +6,12 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'my_football_life.settings')
 import django
 
 django.setup()
-from leagues_and_teams.models import TeamStanding, Championship, Team
+from celery import shared_task
+from .models import TeamStanding, Championship, Team
 
 
-def create_championships_team_teamstanding():
+@shared_task
+def create_championships_team_teamstanding_async():
     headers = {'X-Auth-Token': '81866e2c8ae342a2921bcf1a4753e22d'}
     leagues = ['PD', 'BL1', 'PL', 'SA', 'FL1']
     for liga in leagues:
@@ -51,5 +53,5 @@ def create_championships_team_teamstanding():
             team_standing.goal_difference = team_data['goalDifference']
             team_standing.save()
 
-        print('Parsed standings for league: %s', championship_name)
+        print('Parsed standings for league:', championship_name)
 

@@ -1,6 +1,7 @@
 import os
 
 import requests
+from celery import shared_task
 from django.db import transaction
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'my_football_life.settings')
@@ -55,7 +56,8 @@ def update_or_create_matches(championship, match_data):
             match.save()
 
 
-def create_matches():
+@shared_task
+def create_matches_async():
     championships = {
         'PD': 'Primera Division',
         'BL1': 'Bundesliga',
@@ -73,7 +75,8 @@ def create_matches():
 
 
 def main():
-    create_matches()
+    create_matches_async.apply_async()
+
 
 
 if __name__ == "__main__":

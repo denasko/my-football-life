@@ -6,34 +6,36 @@ from django.utils import timezone
 
 from leagues_and_teams.models import Championship, Team
 from .models import News, Like, Comment, NewsTags
+from .servises import filter_news
 
 
 def get_news(request):
     championships = Championship.objects.all()
     tags = NewsTags.objects.all()
-    if request.method == 'POST':
-        championship_name = request.POST.get('championship')
-        if championship_name:
-            try:
-                championship = Championship.objects.get(name=championship_name)
-                news = News.objects.filter(championship=championship)
-            except Championship.DoesNotExist:
-                news = News.objects.all()
-        else:
-            news = News.objects.all()
-    else:
-        news = News.objects.all()
+    news = News.objects.all()
+    print(request.GET.get)
+    news = filter_news(request, news)
 
     paginator = Paginator(news, 5)
     page = request.GET.get('page')
+
     try:
         news = paginator.page(page)
     except PageNotAnInteger:
         news = paginator.page(1)
     except EmptyPage:
         news = paginator.page(paginator.num_pages)
-    return render(request, template_name='news/news.html', context={'news': news, 'championships': championships,
-                                                                    'tags': tags})
+
+    context = {
+        'news': news,
+        'championships': championships,
+        'tags': tags,
+        'selected_championship': request.GET.get('championship'),
+        'selected_tag': request.GET.get('tag'),
+        'selected_date': request.GET.get('date'),
+    }
+
+    return render(request, 'news/news.html', context)
 
 
 def news_detail(request, news_id: News.pk):

@@ -14,22 +14,31 @@
     <div class="row justify-content-between">
         <div class="col-md-8">
             <div class="text-left mt-3">
+            <h2>Фильтр новостей</h2>
+            <form method="GET" action="{% url 'news:get_news' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="championship">Чемпионат:</label>
+                    <select id="championship" name="championship">
+                        <option value="">Выберите чемпионат</option>
+                        {% for championship in championships %}
+                        <option value="{{ championship.name }}" {% if selected_championship == championship.name %}selected{% endif %}>{{ championship.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-                <h2>Фильтр новостей</h2>
-                <form method="POST" action="{% url 'news:get_news' %}">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="championship">Чемпионат:</label>
-                        {% csrf_token %}
-                        <select id="championship" name="championship">
-                            <option value="">Выберите чемпионат</option>
-                            {% for championship in championships %}
-                            <option value="{{ championship.name }}">{{ championship.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Применить фильтр</button>
-                </form>
+                <div class="form-group">
+                    <label for="tag">Тег:</label>
+                    <select id="tag" name="tag">
+                        <option value="">Выберите тег</option>
+                        {% for tag in tags %}
+                        <option value="{{ tag.name }}" {% if selected_tag == tag.name %}selected{% endif %}>{{ tag.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+    <button type="submit" class="btn btn-primary">Применить фильтр</button>
+</form>
             <div class="text-left mt-3">
                 <h2>Новости</h2>
                 <ul class="list-group">
@@ -79,12 +88,13 @@
                     <ul class="pagination">
                         {% if news.has_previous %}
                         <li class="page-item">
-                            <a class="page-link" href="?page=1">&laquo; Первая</a>
+                            <a class="page-link" href="?page=1{% if selected_championship %}&championship={{ selected_championship }}{% endif %}">&laquo; Первая</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ news.previous_page_number }}">Предыдущая</a>
+                            <a class="page-link" href="?page={{ news.previous_page_number }}{% if selected_championship %}&championship={{ selected_championship }}{% endif %}">Предыдущая</a>
                         </li>
                         {% endif %}
+
 
                         <li class="page-item disabled">
                             <span class="page-link">Страница {{ news.number }} из {{ news.paginator.num_pages }}</span>
@@ -92,10 +102,10 @@
 
                         {% if news.has_next %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ news.next_page_number }}">Следующая</a>
+                            <a class="page-link" href="?page={{ news.next_page_number }}{% if selected_championship %}&championship={{ selected_championship }}{% endif %}">Следующая</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ news.paginator.num_pages }}">Последняя &raquo;</a>
+                            <a class="page-link" href="?page={{ news.paginator.num_pages }}{% if selected_championship %}&championship={{ selected_championship }}{% endif %}">Последняя &raquo;</a>
                         </li>
                         {% endif %}
                     </ul>

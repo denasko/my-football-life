@@ -6,6 +6,7 @@ from django.views.decorators.cache import cache_page
 from .models import TeamStanding, Championship, Match, NextMatchPreview
 from .servises import get_match_day
 
+
 # _________________________________________________Championships________________________________________________________
 
 
@@ -78,6 +79,7 @@ def upcoming_matches(request):
 
     return render(request, template_name='leagues_and_teams/upcoming_matches.html', context={'matches': matches})
 
+
 # _________________________________________________Preview________________________________________________________
 
 
@@ -88,5 +90,8 @@ def preview(request, championship_name: 'Championship.name'):
     :return: page with preview of next match
     """
     next_match_day: int = get_match_day(championship_name=championship_name)
+    print(next_match_day)
     previews = NextMatchPreview.objects.filter(match__matchday=next_match_day)
-    return render(request, template_name='leagues_and_teams/preview.html', context={'previews': previews})
+    championship: Championship = get_object_or_404(Championship, name=championship_name)
+    return render(request, template_name='leagues_and_teams/preview.html',
+                  context={'previews': previews, 'championship': championship, 'next_match_day': next_match_day})
